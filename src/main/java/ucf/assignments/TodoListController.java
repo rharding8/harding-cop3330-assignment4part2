@@ -1,6 +1,5 @@
 package ucf.assignments;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,8 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-
-import java.util.Comparator;
 import java.util.function.Predicate;
 
 public class TodoListController {
@@ -47,7 +44,7 @@ public class TodoListController {
   // ItemList to be given from TodoListController
   ItemList itemList;
   // ObservableList to store a sorted version of the list in
-  ObservableList<Item> sortedList;
+  ObservableList<Item> filteredList;
 
   @FXML
   public void addButtonClicked(ActionEvent actionEvent) {
@@ -66,16 +63,17 @@ public class TodoListController {
   }
 
   @FXML
-  public void saveButtonClicked(ActionEvent actionEvent) {
-    // Call saveList in TodoListIO using path from pathField and itemList
-  }
-
-  @FXML
   public void updateButtonClicked(ActionEvent actionEvent) {
     // Call updateItem() using selection from itemDisplay
     // Call refresh()
     updateItem(itemDisplay.getSelectionModel().getSelectedItem());
     refresh();
+  }
+
+  @FXML
+  public void saveButtonClicked(ActionEvent actionEvent) {
+    // Call saveList in TodoListIO using path from pathField and itemList
+    TodoListIO.saveList(itemList, pathField.getText());
   }
 
   public void addToList() {
@@ -85,14 +83,12 @@ public class TodoListController {
     boolean flag = completeBox.isSelected();
     Item i = new Item(descriptionField.getText(), dateField.getText(), flag);
     itemList.addItem(i);
-    sortedList.add(i);
   }
 
   public void removeFromList(Item i) {
     // Remove i from "items" in itemList
     // Make sure sortedList updates as well
     itemList.removeItem(i);
-    sortedList.remove(i);
   }
 
   public void updateItem(Item i) {
@@ -100,13 +96,13 @@ public class TodoListController {
     // Edit i using the fields entered and boolean value
     // Ensure the item is updated in both itemList and sortedList
     itemList.removeItem(i);
-    sortedList.remove(i);
     boolean flag = completeBox.isSelected();
-    i.setDescription(descriptionField.getText());
-    i.setDate(dateField.getText());
+    if (descriptionField.getText() != null)
+      i.setDescription(descriptionField.getText());
+    if (dateField.getText() != null)
+      i.setDate(dateField.getText());
     i.setCompletion(flag);
     itemList.addItem(i);
-    sortedList.add(i);
   }
 
   @FXML
@@ -115,7 +111,7 @@ public class TodoListController {
     // Set sortedList to "items" in itemList
     // Call refresh()
     itemList = new ItemList("List");
-    sortedList = FXCollections.observableArrayList(itemList.getItems());
+    itemDisplay.setItems(itemList.getItems());
     refresh();
   }
 
@@ -127,42 +123,37 @@ public class TodoListController {
     descriptionField.setText(null);
     dateField.setText(null);
     completeBox.setSelected(false);
-    itemDisplay.setItems(sortedList);
   }
 
   @FXML
   public void dateSortClicked(ActionEvent actionEvent) {
     // Call dateSort()
     // Call refresh()
-    dateSort();
+    itemList.dateSort();
     refresh();
-  }
-
-  public void dateSort() {
-    // Sort sortedList using date as a comparator
-    sortedList.sort(Comparator.comparing(Item::getDate));
   }
 
   @FXML
   public void showAllClicked(ActionEvent actionEvent) {
-    // Reset sortedList back to the full "items" in itemList
-    sortedList = FXCollections.observableArrayList(itemList.getItems());
-    refresh();
+    itemDisplay.setItems(itemList.getItems());
   }
 
   @FXML
   public void showCompleteClicked(ActionEvent actionEvent) {
-    sortedList.removeIf(Predicate.not(Item::isComplete));
-    refresh();
+    filteredList = itemList.getItems().filtered(Item::isComplete);
+    itemDisplay.setItems(filteredList);
   }
 
   @FXML
   public void showIncompleteClicked(ActionEvent actionEvent) {
-    sortedList.removeIf(Item::isComplete);
-    refresh();
+    filteredList = itemList.getItems().filtered(Predicate.not(Item::isComplete));
+    itemDisplay.setItems(filteredList);
   }
 
   @FXML
   public void loadButtonClicked(ActionEvent actionEvent) {
+    itemList = TodoListIO.loadList(pathField.getText());
+    itemDisplay.setItems(itemList.getItems());
+    refresh();
   }
 }

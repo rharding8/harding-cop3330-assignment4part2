@@ -37,6 +37,10 @@ public class ItemList {
     return items;
   }
 
+  public void setItems(ObservableList<Item> itemList) {
+    items = itemList;
+  }
+
   public void addItem(Item i) {
     // Add i to items
     items.add(i);
@@ -47,27 +51,8 @@ public class ItemList {
     items.remove(i);
   }
 
-  public ObservableList<Item> completionSort(boolean completion) {
-    // Create new ObservableList
-    // for every Item in items
-      // if Item.isComplete() is equal to completion
-        // add Item to new list
-    // Return new List
-    ObservableList<Item> sortedList = FXCollections.observableArrayList();
-    for (Item i: items) {
-      if (i.isComplete() == completion) {
-        sortedList.add(i);
-      }
-    }
-    return sortedList;
-  }
-
-  public ObservableList<Item> sortByDate() {
-    // Create new ObservableList and set equal to items
-    // Sort the new list by the "date" string of each item in ascending order
-    // Return new list
-    ObservableList<Item> sortedList = items;
-    sortedList.sort(Comparator.comparing(Item::getDate));
-    return sortedList;
+  public void dateSort() {
+    // Sort items by comparator date
+    items.sort(Comparator.comparing(Item::getDate));
   }
 }
