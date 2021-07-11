@@ -40,6 +40,10 @@ public class TodoListController {
   public Button showIncompleteButton;
   @FXML
   public Button loadButton;
+  @FXML
+  public TextField titleField;
+  @FXML
+  public Button setTitleButton;
 
   // ItemList to be given from TodoListController
   ItemList itemList;
@@ -91,17 +95,17 @@ public class TodoListController {
 
   @FXML
   public void saveButtonClicked(ActionEvent actionEvent) {
-    // Call saveList in TodoListIO using path from pathField and itemList
-    TodoListIO.saveList(itemList, pathField.getText());
+    // Call save()
+    // Call refresh()
+    save();
+    refresh();
   }
 
   @FXML
   public void loadButtonClicked(ActionEvent actionEvent) {
-    // Set itemList to a list loaded from the JSon file specified by pathField, using loadList in TodoListIO
-    // Set itemDisplay to itemList to update contents
+    // Call load()
     // Call refresh()
-    itemList = TodoListIO.loadList(pathField.getText());
-    itemDisplay.setItems(itemList.getItems());
+    load();
     refresh();
   }
 
@@ -203,5 +207,46 @@ public class TodoListController {
   public void showIncomplete() {
     filteredList = itemList.getItems().filtered(Predicate.not(Item::isComplete));
     itemDisplay.setItems(filteredList);
+  }
+
+  @FXML
+  public void setTitleClicked(ActionEvent actionEvent) {
+    // Call setTitle()
+    // Call refresh()
+    setTitle();
+    refresh();
+  }
+
+  public void setTitle() {
+    // Set the title of itemList to the title entered in titleField
+    itemList.setTitle(titleField.getText());
+  }
+
+  public void save() {
+    // If path is valid
+      // Call saveList in TodoListIO using path from pathField and itemList
+    // Else
+      // Set pathField to error message
+    if (InputValidator.pathValidator(pathField.getText())) {
+      TodoListIO.saveList(itemList, pathField.getText());
+    }
+    else {
+      pathField.setText("ERROR: Invalid Path Entered");
+    }
+  }
+
+  public void load() {
+    // If path in pathField is valid
+      // Set itemList to list loaded from loadList in TodoListIO using pathField
+      // Reset itemDisplay to display this new list
+    // Else
+      // Set pathField to error message
+    if (InputValidator.pathValidator(pathField.getText())) {
+      itemList = TodoListIO.loadList(pathField.getText());
+      itemDisplay.setItems(itemList.getItems());
+    }
+    else {
+      pathField.setText("ERROR: Invalid Path Entered");
+    }
   }
 }

@@ -2,14 +2,22 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.5, 0.5, 0.5" orientation="VERTICAL" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.TodoListController">
+<SplitPane dividerPositions="0.5, 0.5, 0.5, 0.5" orientation="VERTICAL" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.TodoListController">
    <items>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="1000.0">
+         <children>
+            <TextField fx:id="titleField" layoutX="318.0" layoutY="11.0" prefHeight="26.0" prefWidth="211.0" promptText="List Title:" />
+            <Button fx:id="setTitleButton" layoutX="608.0" layoutY="11.0" mnemonicParsing="false" onAction="#setTitleClicked" text="Set Title" />
+         </children>
+      </AnchorPane>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="1000.0">
          <children>
             <TextField fx:id="dateField" layoutX="273.0" layoutY="11.0" prefHeight="26.0" prefWidth="163.0" promptText="Date (YYYY-MM-DD):" />
@@ -18,10 +26,14 @@
             <Separator layoutX="445.0" orientation="VERTICAL" prefHeight="50.0" prefWidth="6.0" />
             <Separator layoutX="865.0" orientation="VERTICAL" prefHeight="50.0" prefWidth="6.0" />
             <CheckBox fx:id="completeBox" layoutX="879.0" layoutY="15.0" mnemonicParsing="false" text="Complete?" />
-            <TextField layoutX="40.0" layoutY="11.0" prefHeight="26.0" prefWidth="211.0" promptText="List Title:" />
+            <Label layoutX="92.0" layoutY="11.0" text="New Items:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
-      <ListView fx:id="itemDisplay" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="1000.0" />
+      <ListView fx:id="itemDisplay" prefHeight="200.0" prefWidth="1000.0" />
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="1000.0">
          <children>
             <Button fx:id="removeButton" layoutX="248.0" layoutY="13.0" mnemonicParsing="false" onAction="#removeButtonClicked" prefHeight="26.0" prefWidth="90.0" text="Remove Item" />

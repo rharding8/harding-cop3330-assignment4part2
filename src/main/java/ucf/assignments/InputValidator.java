@@ -1,5 +1,10 @@
 package ucf.assignments;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class InputValidator {
 
   public static boolean isNull(String input) {
@@ -55,5 +60,16 @@ public class InputValidator {
             && Integer.parseInt(date.substring(5, 6)) != 9
             && Integer.parseInt(date.substring(5, 6)) != 11)
             || Integer.parseInt(date.substring(8, 9)) != 31;
+  }
+
+  public static boolean pathValidator(String path) {
+    try {
+      FileReader reader = new FileReader(path);
+      reader.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
   }
 }
