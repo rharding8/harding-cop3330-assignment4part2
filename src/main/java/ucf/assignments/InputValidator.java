@@ -62,18 +62,18 @@ public class InputValidator {
       i++;
     }
 
-    if (Integer.parseInt(date.substring(5, 7)) < 1 || Integer.parseInt(date.substring(5, 6)) > 12) {
+    if (Integer.parseInt(date.substring(5, 7)) < 1 || Integer.parseInt(date.substring(5, 7)) > 12) {
       return false;
     }
-    if (Integer.parseInt(date.substring(8, 10)) < 1 || Integer.parseInt(date.substring(8, 9)) > 31) {
+    if (Integer.parseInt(date.substring(8, 10)) < 1 || Integer.parseInt(date.substring(8, 10)) > 31) {
       return false;
     }
 
     if (Integer.parseInt(date.substring(5, 7)) == 2) {
-      if (Integer.parseInt(date.substring(0, 4)) % 4 != 0 && Integer.parseInt(date.substring(8, 9)) > 28) {
+      if (Integer.parseInt(date.substring(0, 4)) % 4 != 0 && Integer.parseInt(date.substring(8, 10)) > 28) {
         return false;
       }
-      else if (Integer.parseInt(date.substring(8, 9)) > 29) {
+      else if (Integer.parseInt(date.substring(8, 10)) > 29) {
         return false;
       }
     }

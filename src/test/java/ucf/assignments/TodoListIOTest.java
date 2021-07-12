@@ -15,8 +15,8 @@ class TodoListIOTest {
 
   @Test
   void saveList() {
-    // Create an ItemList to save
-    // Call static saveList() function with a path to output file
+    // Create an ItemList to save and add some test data
+    // Call static saveList() function with a path to output file (In Resources)
     // Check that the output file now exists
     ItemList list = new ItemList("TestOutput");
     list.addItem(new Item("TestingTesting", "2021-07-11", false));

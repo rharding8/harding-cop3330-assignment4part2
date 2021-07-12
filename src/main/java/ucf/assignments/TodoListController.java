@@ -5,6 +5,7 @@
 
 package ucf.assignments;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,8 @@ import java.util.function.Predicate;
 public class TodoListController {
   // All given FXML Fields:
 
+  @FXML
+  public Button clearListButton;
   @FXML
   public TextField pathField;
   @FXML
@@ -58,20 +61,24 @@ public class TodoListController {
   @FXML
   public void initialize() {
     // Initialize itemList with placeholder title "List"
-    // Set sortedList to "items" in itemList
+    // Set itemDisplay to display the items in itemList
+    // Bind remove and update buttons to only be usable when an item is selected
     // Call refresh()
     itemList = new ItemList("List");
     itemDisplay.setItems(itemList.getItems());
+    removeButton.disableProperty().bind(itemDisplay.getSelectionModel().selectedItemProperty().isNull());
+    updateButton.disableProperty().bind(itemDisplay.getSelectionModel().selectedItemProperty().isNull());
     refresh();
   }
 
   @FXML
   public void refresh() {
-    // If description and date fields were correctly input and are still editable
-      // Set description and date fields to "null"
+    // If description, date, and path fields were correctly input and are still editable
+      // Set description, date, and path fields to "null"
     // Else
-      // Simply set them to be editable again, but leave test
+      // Simply set them to be editable again, but leave error messages
     // Set completeBox to false
+
     if (descriptionField.isEditable())
       descriptionField.setText(null);
     else
@@ -92,7 +99,7 @@ public class TodoListController {
 
   @FXML
   public void addButtonClicked(ActionEvent actionEvent) {
-    // Call addToList()
+    // Call addToList() using the information in relevant fields
     // Call refresh()
     addToList(descriptionField.getText(), dateField.getText(), completeBox.isSelected());
     refresh();
@@ -108,7 +115,7 @@ public class TodoListController {
 
   @FXML
   public void updateButtonClicked(ActionEvent actionEvent) {
-    // Call updateItem() using selection from itemDisplay
+    // Call updateItem() using selection from itemDisplay and information in relevant fields
     // Call refresh()
     updateItem(itemDisplay.getSelectionModel().getSelectedItem(),
             descriptionField.getText(), dateField.getText(), completeBox.isSelected());
@@ -167,16 +174,24 @@ public class TodoListController {
 
   @FXML
   public void setTitleClicked(ActionEvent actionEvent) {
-    // Call setTitle()
+    // Call setTitle() using the information in titleField
     // Call refresh()
     setTitle(titleField.getText());
     refresh();
   }
 
   public void addToList(String description, String date, boolean flag) {
-    // Bind completeBox to boolean value
-    // Add new Item to items in itemList using the fields entered and boolean value
-    // Make sure sortedList updates as well
+    // Set a boolean check to flag if any requirement fails
+    // Check if the required fields are:
+      // Null in which case:
+        // Set the field to contain a fitting error message
+        // Set the field to not be editable, as a flag for refresh()
+      // Invalid according to validators in InputValidator in which case:
+        // Set field to contain an error message fitting for this
+        // Set field to be uneditable as a flag for refresh()
+    // If the check holds true (Meaning all fields are valid)
+      // Add new Item to items in itemList using the fields entered and boolean value
+
     boolean check = true;
     if (InputValidator.isNull(description)) {
       descriptionField.setText("ERROR: No description entered to add");
@@ -210,14 +225,21 @@ public class TodoListController {
 
   public void removeFromList(Item i) {
     // Remove i from "items" in itemList
-    // Make sure sortedList updates as well
     itemList.removeItem(i);
   }
 
   public void updateItem(Item i, String description, String date, boolean flag) {
-    // Bind completeBox to boolean value
-    // Edit i using the fields entered and boolean value
-    // Ensure the item is updated in both itemList and sortedList
+    // Remove existing item from itemList
+    // Check if the required fields are:
+      // Null in which case:
+        // Do nothing
+      // Invalid according to validators in InputValidator in which case:
+        // Set field to contain an error message fitting for this
+        // Set field to be uneditable as a flag for refresh()
+    // If the fields are valid
+      // Set the item's fields to the new values
+    // Add the now-updated item back into itemList
+
     itemList.removeItem(i);
     if (!InputValidator.isNull(description) && description.length() != 0) {
       if (InputValidator.descriptionValidator(description)) {
@@ -242,15 +264,17 @@ public class TodoListController {
   }
 
   public void showComplete() {
+    // Set filteredList to be a filter of items in itemList by each item being complete
     filteredList = itemList.getItems().filtered(Item::isComplete);
   }
 
   public void showIncomplete() {
+    // Set filteredList to be a filter of items in itemList by each item not being complete
     filteredList = itemList.getItems().filtered(Predicate.not(Item::isComplete));
   }
 
   public void setTitle(String title) {
-    // Set the title of itemList to the title entered in titleField
+    // Set the title of itemList to the title given
     itemList.setTitle(title);
   }
 
@@ -259,6 +283,7 @@ public class TodoListController {
       // Call saveList in TodoListIO using path from pathField and itemList
     // Else
       // Set pathField to error message
+      // Set pathField to be uneditable as a flag for refresh()
     if (InputValidator.pathValidator(pathField.getText())) {
       TodoListIO.saveList(itemList, pathField.getText());
     }
@@ -274,6 +299,7 @@ public class TodoListController {
       // Reset itemDisplay to display this new list
     // Else
       // Set pathField to error message
+      // Set pathField to be uneditable as a flag for refresh()
     if (InputValidator.pathValidator(pathField.getText())) {
       itemList = TodoListIO.loadList(pathField.getText());
       itemDisplay.setItems(itemList.getItems());
@@ -282,5 +308,22 @@ public class TodoListController {
       pathField.setText("ERROR: Invalid Path Entered");
       pathField.setEditable(false);
     }
+  }
+
+  @FXML
+  public void clearListClicked(ActionEvent actionEvent) {
+    // Call clearList()
+    // Reset itemDisplay to items in itemList
+    // Call refresh()
+    clearList();
+    itemDisplay.setItems(itemList.getItems());
+    refresh();
+  }
+
+  public void clearList() {
+    // Create a new, empty ObservableList of items
+    // Set the empty list into itemList
+    ObservableList<Item> emptyList = FXCollections.observableArrayList();
+    itemList.setItems(emptyList);
   }
 }

@@ -42,9 +42,8 @@ class ItemListTest {
   @Test
   void addItem() {
     // Instantiate ItemList with a test title
-    // Add items to list
-    // Create expected list
-    // Assert lists are equal
+    // Add some test items to the list
+    // Ensure that the items in the ItemList are equal to the expected items
     ItemList list = new ItemList("Test");
     ObservableList<Item> expectedItems = FXCollections.observableArrayList();
     Item item1 = new Item("Item1", "Date1", false);
@@ -58,6 +57,11 @@ class ItemListTest {
 
   @Test
   void removeItem() {
+    // Instantiate ItemList with a test title
+    // Add some test items to the list
+    // Add an extra item to the ItemList that isn't in the expected list
+    // Remove said item
+    // Assert the lists match
     ItemList list = new ItemList("Test");
     ObservableList<Item> expectedItems = FXCollections.observableArrayList();
     Item item1 = new Item("Item1", "Date1", false);
@@ -74,6 +78,11 @@ class ItemListTest {
 
   @Test
   void dateSort() {
+    // Instantiate ItemList with a test title
+    // Add some test items to an expected list
+    // Add them to the ItemList, out of order
+    // Sort by date in ItemList
+    // Assert the lists match
     ItemList list = new ItemList("Test");
     ObservableList<Item> expectedItems = FXCollections.observableArrayList();
     Item item1 = new Item("Item1", "Date1", false);

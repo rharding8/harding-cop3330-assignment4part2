@@ -14,8 +14,9 @@
    <items>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="1000.0">
          <children>
-            <TextField fx:id="titleField" layoutX="318.0" layoutY="11.0" prefHeight="26.0" prefWidth="211.0" promptText="List Title:" />
-            <Button fx:id="setTitleButton" layoutX="608.0" layoutY="11.0" mnemonicParsing="false" onAction="#setTitleClicked" text="Set Title" />
+            <TextField fx:id="titleField" layoutX="95.0" layoutY="11.0" prefHeight="26.0" prefWidth="211.0" promptText="List Title:" />
+            <Button fx:id="setTitleButton" layoutX="385.0" layoutY="11.0" mnemonicParsing="false" onAction="#setTitleClicked" text="Set Title" />
+            <Button fx:id="clearListButton" layoutX="832.0" layoutY="11.0" mnemonicParsing="false" onAction="#clearListClicked" text="Clear List" />
          </children>
       </AnchorPane>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="1000.0">
@@ -26,9 +27,9 @@
             <Separator layoutX="445.0" orientation="VERTICAL" prefHeight="50.0" prefWidth="6.0" />
             <Separator layoutX="865.0" orientation="VERTICAL" prefHeight="50.0" prefWidth="6.0" />
             <CheckBox fx:id="completeBox" layoutX="879.0" layoutY="15.0" mnemonicParsing="false" text="Complete?" />
-            <Label layoutX="92.0" layoutY="11.0" text="New Items:">
+            <Label layoutX="98.0" layoutY="13.0" text="New Items:">
                <font>
-                  <Font size="18.0" />
+                  <Font size="15.0" />
                </font>
             </Label>
          </children>
