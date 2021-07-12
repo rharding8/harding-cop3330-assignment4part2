@@ -1,7 +1,5 @@
 package ucf.assignments;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -45,21 +43,21 @@ public class InputValidator {
       i++;
     }
 
-    if (Integer.parseInt(date.substring(5, 6)) < 1 || Integer.parseInt(date.substring(5, 6)) > 12) {
+    if (Integer.parseInt(date.substring(5, 7)) < 1 || Integer.parseInt(date.substring(5, 6)) > 12) {
       return false;
     }
-    if (Integer.parseInt(date.substring(8, 9)) < 1 || Integer.parseInt(date.substring(8, 9)) > 31) {
+    if (Integer.parseInt(date.substring(8, 10)) < 1 || Integer.parseInt(date.substring(8, 9)) > 31) {
       return false;
     }
-    if (Integer.parseInt(date.substring(5, 6)) == 2 && Integer.parseInt(date.substring(8, 9)) > 29) {
+    if (Integer.parseInt(date.substring(5, 7)) == 2 && Integer.parseInt(date.substring(8, 9)) > 29) {
       return false;
     }
 
-    return (Integer.parseInt(date.substring(5, 6)) != 4
-            && Integer.parseInt(date.substring(5, 6)) != 6
-            && Integer.parseInt(date.substring(5, 6)) != 9
-            && Integer.parseInt(date.substring(5, 6)) != 11)
-            || Integer.parseInt(date.substring(8, 9)) != 31;
+    return (Integer.parseInt(date.substring(5, 7)) != 4
+            && Integer.parseInt(date.substring(5, 7)) != 6
+            && Integer.parseInt(date.substring(5, 7)) != 9
+            && Integer.parseInt(date.substring(5, 7)) != 11)
+            || Integer.parseInt(date.substring(8, 10)) != 31;
   }
 
   public static boolean pathValidator(String path) {

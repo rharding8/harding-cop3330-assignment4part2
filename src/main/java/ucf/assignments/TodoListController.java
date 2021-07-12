@@ -46,9 +46,9 @@ public class TodoListController {
   public Button setTitleButton;
 
   // ItemList to be given from TodoListController
-  ItemList itemList;
+  public ItemList itemList;
   // ObservableList to store a sorted version of the list in
-  ObservableList<Item> filteredList;
+  public ObservableList<Item> filteredList;
 
   @FXML
   public void initialize() {
@@ -73,7 +73,7 @@ public class TodoListController {
   public void addButtonClicked(ActionEvent actionEvent) {
     // Call addToList()
     // Call refresh()
-    addToList();
+    addToList(descriptionField.getText(), dateField.getText(), completeBox.isSelected());
     refresh();
   }
 
@@ -89,7 +89,8 @@ public class TodoListController {
   public void updateButtonClicked(ActionEvent actionEvent) {
     // Call updateItem() using selection from itemDisplay
     // Call refresh()
-    updateItem(itemDisplay.getSelectionModel().getSelectedItem());
+    updateItem(itemDisplay.getSelectionModel().getSelectedItem(),
+            descriptionField.getText(), dateField.getText(), completeBox.isSelected());
     refresh();
   }
 
@@ -126,43 +127,54 @@ public class TodoListController {
   @FXML
   public void showCompleteClicked(ActionEvent actionEvent) {
     // Call showComplete()
+    // Set itemDisplay to show the filtered list
     // Call refresh()
     showComplete();
+    itemDisplay.setItems(filteredList);
     refresh();
   }
 
   @FXML
   public void showIncompleteClicked(ActionEvent actionEvent) {
     // Call showIncomplete()
+    // Set itemDisplay to show the filtered list
     // Call refresh()
     showIncomplete();
+    itemDisplay.setItems(filteredList);
     refresh();
   }
 
-  public void addToList() {
+  @FXML
+  public void setTitleClicked(ActionEvent actionEvent) {
+    // Call setTitle()
+    // Call refresh()
+    setTitle(titleField.getText());
+    refresh();
+  }
+
+  public void addToList(String description, String date, boolean flag) {
     // Bind completeBox to boolean value
     // Add new Item to items in itemList using the fields entered and boolean value
     // Make sure sortedList updates as well
-    boolean flag = completeBox.isSelected();
     boolean check = true;
-    if (InputValidator.isNull(descriptionField.getText())) {
+    if (InputValidator.isNull(description)) {
       descriptionField.setText("ERROR: No description entered to add");
       check = false;
     }
-    if (InputValidator.isNull(dateField.getText())) {
+    if (InputValidator.isNull(date)) {
       dateField.setText("ERROR: No date entered to add");
       check = false;
     }
-    if (!InputValidator.descriptionValidator(descriptionField.getText())) {
+    if (!InputValidator.descriptionValidator(description)) {
       descriptionField.setText("ERROR: Invalid string entered for description");
       check = false;
     }
-    if (!InputValidator.dateValidator(dateField.getText())) {
+    if (!InputValidator.dateValidator(date)) {
       dateField.setText("ERROR: Invalid string entered for date");
       check = false;
     }
     if (check) {
-      Item i = new Item(descriptionField.getText(), dateField.getText(), flag);
+      Item i = new Item(description, date, flag);
       itemList.addItem(i);
     }
   }
@@ -173,53 +185,42 @@ public class TodoListController {
     itemList.removeItem(i);
   }
 
-  public void updateItem(Item i) {
+  public void updateItem(Item i, String description, String date, boolean flag) {
     // Bind completeBox to boolean value
     // Edit i using the fields entered and boolean value
     // Ensure the item is updated in both itemList and sortedList
     itemList.removeItem(i);
-    if (!InputValidator.isNull(descriptionField.getText())) {
-      if (InputValidator.descriptionValidator(descriptionField.getText())) {
-        i.setDescription(descriptionField.getText());
+    if (!InputValidator.isNull(description)) {
+      if (InputValidator.descriptionValidator(description)) {
+        i.setDescription(description);
       }
       else {
         descriptionField.setText("ERROR: Invalid description entered");
       }
     }
-    if (!InputValidator.isNull(dateField.getText())) {
-      if (InputValidator.dateValidator(dateField.getText())) {
-        i.setDate(dateField.getText());
+    if (!InputValidator.isNull(date)) {
+      if (InputValidator.dateValidator(date)) {
+        i.setDate(date);
       }
       else {
         dateField.setText("ERROR: Invalid date entered");
       }
     }
-    boolean flag = completeBox.isSelected();
     i.setCompletion(flag);
     itemList.addItem(i);
   }
 
   public void showComplete() {
     filteredList = itemList.getItems().filtered(Item::isComplete);
-    itemDisplay.setItems(filteredList);
   }
 
   public void showIncomplete() {
     filteredList = itemList.getItems().filtered(Predicate.not(Item::isComplete));
-    itemDisplay.setItems(filteredList);
   }
 
-  @FXML
-  public void setTitleClicked(ActionEvent actionEvent) {
-    // Call setTitle()
-    // Call refresh()
-    setTitle();
-    refresh();
-  }
-
-  public void setTitle() {
+  public void setTitle(String title) {
     // Set the title of itemList to the title entered in titleField
-    itemList.setTitle(titleField.getText());
+    itemList.setTitle(title);
   }
 
   public void save() {
