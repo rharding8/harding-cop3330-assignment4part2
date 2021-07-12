@@ -1,5 +1,6 @@
 package ucf.assignments;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -61,13 +62,7 @@ public class InputValidator {
   }
 
   public static boolean pathValidator(String path) {
-    try {
-      FileReader reader = new FileReader(path);
-      reader.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-      return false;
-    }
-    return true;
+    File file = new File(path);
+    return file.isDirectory() || file.isFile();
   }
 }

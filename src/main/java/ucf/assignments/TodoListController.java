@@ -62,10 +62,26 @@ public class TodoListController {
 
   @FXML
   public void refresh() {
-    // Set description and date fields to "null"
+    // If description and date fields were correctly input and are still editable
+      // Set description and date fields to "null"
+    // Else
+      // Simply set them to be editable again, but leave test
     // Set completeBox to false
-    descriptionField.setText(null);
-    dateField.setText(null);
+    if (descriptionField.isEditable())
+      descriptionField.setText(null);
+    else
+      descriptionField.setEditable(true);
+
+    if (dateField.isEditable())
+      dateField.setText(null);
+    else
+      dateField.setEditable(true);
+
+    if (pathField.isEditable())
+      pathField.setText(null);
+    else
+      pathField.setEditable(true);
+
     completeBox.setSelected(false);
   }
 
@@ -159,19 +175,27 @@ public class TodoListController {
     boolean check = true;
     if (InputValidator.isNull(description)) {
       descriptionField.setText("ERROR: No description entered to add");
+      descriptionField.setEditable(false);
       check = false;
+    }
+    else {
+      if (!InputValidator.descriptionValidator(description)) {
+        descriptionField.setText("ERROR: Invalid string entered for description");
+        descriptionField.setEditable(false);
+        check = false;
+      }
     }
     if (InputValidator.isNull(date)) {
       dateField.setText("ERROR: No date entered to add");
+      dateField.setEditable(false);
       check = false;
     }
-    if (!InputValidator.descriptionValidator(description)) {
-      descriptionField.setText("ERROR: Invalid string entered for description");
-      check = false;
-    }
-    if (!InputValidator.dateValidator(date)) {
-      dateField.setText("ERROR: Invalid string entered for date");
-      check = false;
+    else {
+      if (!InputValidator.dateValidator(date)) {
+        dateField.setText("ERROR: Invalid string entered for date");
+        dateField.setEditable(false);
+        check = false;
+      }
     }
     if (check) {
       Item i = new Item(description, date, flag);
@@ -190,20 +214,22 @@ public class TodoListController {
     // Edit i using the fields entered and boolean value
     // Ensure the item is updated in both itemList and sortedList
     itemList.removeItem(i);
-    if (!InputValidator.isNull(description)) {
+    if (!InputValidator.isNull(description) && description.length() != 0) {
       if (InputValidator.descriptionValidator(description)) {
         i.setDescription(description);
       }
       else {
         descriptionField.setText("ERROR: Invalid description entered");
+        descriptionField.setEditable(false);
       }
     }
-    if (!InputValidator.isNull(date)) {
+    if (!InputValidator.isNull(date) && date.length() != 0) {
       if (InputValidator.dateValidator(date)) {
         i.setDate(date);
       }
       else {
         dateField.setText("ERROR: Invalid date entered");
+        dateField.setEditable(false);
       }
     }
     i.setCompletion(flag);
@@ -233,6 +259,7 @@ public class TodoListController {
     }
     else {
       pathField.setText("ERROR: Invalid Path Entered");
+      pathField.setEditable(false);
     }
   }
 
@@ -248,6 +275,7 @@ public class TodoListController {
     }
     else {
       pathField.setText("ERROR: Invalid Path Entered");
+      pathField.setEditable(false);
     }
   }
 }
