@@ -74,6 +74,11 @@ Note: Saving a file where there is already a file with the same name will
 overwrite the existing file, and Loading a list from a file will overwrite the list
 in memory. Because of this, it is best to be cautious when saving and loading.
 
+Clearing a List
+-
+If you want to remove all items from a list, clicking "Clear List" will do so. This action is irreversable,
+so be wary of it.
+
 Invalid Input
 -
 If the information entered into any field is invalid,
