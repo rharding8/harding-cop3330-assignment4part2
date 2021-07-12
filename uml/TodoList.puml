@@ -7,32 +7,10 @@ class TodoList {
 }
 
 class TodoListController {
-    ListView<ItemList>: listOfLists
-    Button addListButton
-    Button editListButton
-    Button removeListButton
+    Button clearListButton
     TextField titleField
-    Button saveListsButton
-    Button loadListButton
-    TextField saveListField
-    TextField loadListField
-    Button updateTitleButton
-    ObservableList<ItemList>: list
-    addListClicked()
-    editListClicked()
-    removeListClicked()
-    saveListsClicked()
-    loadListClicked()
-    updateTitleClicked()
-    addList()
-    removeList()
-    refresh()
-    updateTitle()
-}
-
-class SingleListController {
+    Button setTitleButton
     TextField pathField
-    Button sortButton
     Button addButton
     TextField dateField
     TextField descriptionField
@@ -40,25 +18,36 @@ class SingleListController {
     Button saveButton
     Button updateButton
     Button removeButton
-    Button backButton
     ListView<Item>: itemDisplay
     Button dateSortButton
+    Button showAllButton
+    Button showCompleteButton
+    Button showIncompleteButton
+    Button loadButton
     ItemList itemList
-    ObservableList<Item> sortedList
-    backButtonClicked()
+    ObservableList<Item> filteredList
     addButtonClicked()
     removeButtonClicked()
     saveButtonClicked()
+    loadButtonClicked()
     updateButtonClicked()
+    showAllClicked()
+    showCompleteClicked()
+    showIncompleteClicked()
+    setTitleClicked()
     addToList()
     removeFromList()
     updateItem()
-    initList()
+    showComplete()
+    showIncomplete()
+    setTitle()
+    save()
+    load()
+    initialize()
     refresh()
-    sortButtonClicked()
-    sortItemList()
     dateSortClicked()
-    dateSort()
+    clearListClicked()
+    clearList()
 }
 
 class Item {
@@ -82,26 +71,30 @@ class ItemList {
     getTitle()
     setTitle()
     getItems()
+    setItems()
     addItem()
-    sortList()
-    sortByDate()
+    dateSort()
 }
 
 class TodoListIO {
     saveList()
-    saveAllLists()
     loadList()
-    loadAllLists()
 }
 
-javafx.Application <|-- TodoList
+class InputValidator {
+    isNull()
+    descriptionValidator()
+    dateValidator()
+    pathValidator()
+}
+
+javafx.Application <|- TodoList
 TodoList - TodoListController
-TodoListController - SingleListController
 TodoListController -- ItemList
+TodoListController - Item
 TodoListController -- TodoListIO
-SingleListController --- ItemList
-SingleListController - Item
-SingleListController - TodoListIO
+TodoListController - InputValidator
 ItemList - Item
+TodoListIO - ItemList
 
 @enduml

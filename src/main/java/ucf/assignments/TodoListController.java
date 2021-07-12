@@ -19,15 +19,9 @@ public class TodoListController {
   // All given FXML Fields:
 
   @FXML
-  public Button clearListButton;
-  @FXML
-  public TextField pathField;
-  @FXML
   public Button addButton;
   @FXML
-  public TextField dateField;
-  @FXML
-  public TextField descriptionField;
+  public Button clearListButton;
   @FXML
   public CheckBox completeBox;
   @FXML
@@ -36,8 +30,6 @@ public class TodoListController {
   public Button updateButton;
   @FXML
   public Button removeButton;
-  @FXML
-  public ListView<Item> itemDisplay;
   @FXML
   public Button dateSortButton;
   @FXML
@@ -49,9 +41,17 @@ public class TodoListController {
   @FXML
   public Button loadButton;
   @FXML
+  public Button setTitleButton;
+  @FXML
+  public ListView<Item> itemDisplay;
+  @FXML
   public TextField titleField;
   @FXML
-  public Button setTitleButton;
+  public TextField dateField;
+  @FXML
+  public TextField descriptionField;
+  @FXML
+  public TextField pathField;
 
   // ItemList to be given from TodoListController
   public ItemList itemList;
@@ -180,6 +180,16 @@ public class TodoListController {
     refresh();
   }
 
+  @FXML
+  public void clearListClicked(ActionEvent actionEvent) {
+    // Call clearList()
+    // Reset itemDisplay to items in itemList
+    // Call refresh()
+    clearList();
+    itemDisplay.setItems(itemList.getItems());
+    refresh();
+  }
+
   public void addToList(String description, String date, boolean flag) {
     // Set a boolean check to flag if any requirement fails
     // Check if the required fields are:
@@ -263,6 +273,38 @@ public class TodoListController {
     itemList.addItem(i);
   }
 
+  public void save() {
+    // If path is valid
+    // Call saveList in TodoListIO using path from pathField and itemList
+    // Else
+    // Set pathField to error message
+    // Set pathField to be uneditable as a flag for refresh()
+    if (InputValidator.pathValidator(pathField.getText())) {
+      TodoListIO.saveList(itemList, pathField.getText());
+    }
+    else {
+      pathField.setText("ERROR: Invalid Path Entered");
+      pathField.setEditable(false);
+    }
+  }
+
+  public void load() {
+    // If path in pathField is valid
+    // Set itemList to list loaded from loadList in TodoListIO using pathField
+    // Reset itemDisplay to display this new list
+    // Else
+    // Set pathField to error message
+    // Set pathField to be uneditable as a flag for refresh()
+    if (InputValidator.pathValidator(pathField.getText())) {
+      itemList = TodoListIO.loadList(pathField.getText());
+      itemDisplay.setItems(itemList.getItems());
+    }
+    else {
+      pathField.setText("ERROR: Invalid Path Entered");
+      pathField.setEditable(false);
+    }
+  }
+
   public void showComplete() {
     // Set filteredList to be a filter of items in itemList by each item being complete
     filteredList = itemList.getItems().filtered(Item::isComplete);
@@ -276,48 +318,6 @@ public class TodoListController {
   public void setTitle(String title) {
     // Set the title of itemList to the title given
     itemList.setTitle(title);
-  }
-
-  public void save() {
-    // If path is valid
-      // Call saveList in TodoListIO using path from pathField and itemList
-    // Else
-      // Set pathField to error message
-      // Set pathField to be uneditable as a flag for refresh()
-    if (InputValidator.pathValidator(pathField.getText())) {
-      TodoListIO.saveList(itemList, pathField.getText());
-    }
-    else {
-      pathField.setText("ERROR: Invalid Path Entered");
-      pathField.setEditable(false);
-    }
-  }
-
-  public void load() {
-    // If path in pathField is valid
-      // Set itemList to list loaded from loadList in TodoListIO using pathField
-      // Reset itemDisplay to display this new list
-    // Else
-      // Set pathField to error message
-      // Set pathField to be uneditable as a flag for refresh()
-    if (InputValidator.pathValidator(pathField.getText())) {
-      itemList = TodoListIO.loadList(pathField.getText());
-      itemDisplay.setItems(itemList.getItems());
-    }
-    else {
-      pathField.setText("ERROR: Invalid Path Entered");
-      pathField.setEditable(false);
-    }
-  }
-
-  @FXML
-  public void clearListClicked(ActionEvent actionEvent) {
-    // Call clearList()
-    // Reset itemDisplay to items in itemList
-    // Call refresh()
-    clearList();
-    itemDisplay.setItems(itemList.getItems());
-    refresh();
   }
 
   public void clearList() {
