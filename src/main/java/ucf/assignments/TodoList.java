@@ -10,17 +10,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class TodoList extends Application {
 
   public static void main(String[] args) {
+    // Launch the program
     launch(args);
   }
 
   @Override
   public void start(Stage primaryStage) {
+    // Start the program using TodoList.fxml
     try {
       Parent root = FXMLLoader.load(getClass().getResource("TodoList.fxml"));
       Scene scene = new Scene(root);

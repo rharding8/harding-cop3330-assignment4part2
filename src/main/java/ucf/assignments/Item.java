@@ -54,7 +54,7 @@ public class Item {
     // Create new String constructed as:
       // "On [DATE]: [DESCRIPTION]"
     // If completion is true
-      // Append "(Complete)" to the String
+      // Append "(COMPLETE)" to the String
     // Return the string
     StringBuilder output = new StringBuilder();
     output.append("On ").append(date).append(": ").append(description);

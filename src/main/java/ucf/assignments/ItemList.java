@@ -7,9 +7,7 @@ package ucf.assignments;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.util.Comparator;
-
 
 public class ItemList {
   private String title;
@@ -38,6 +36,7 @@ public class ItemList {
   }
 
   public void setItems(ObservableList<Item> itemList) {
+    // Set items to the given itemList
     items = itemList;
   }
 
@@ -52,7 +51,7 @@ public class ItemList {
   }
 
   public void dateSort() {
-    // Sort items by comparator date
+    // Sort items by comparator date in the item
     items.sort(Comparator.comparing(Item::getDate));
   }
 }

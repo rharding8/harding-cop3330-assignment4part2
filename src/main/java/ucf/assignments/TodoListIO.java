@@ -13,8 +13,11 @@ import java.util.ArrayList;
 
 public class TodoListIO {
   public static void saveList(ItemList list, String path) {
-    // Convert list into Json code
-    // Save as Json file to file given by path
+    // If path leads to directory
+      // Set path to a new file named "list.title".json
+    // Write items in the given list to the file given by path, using Json code
+    // Flush writer to ensure it writes correctly
+    // If there is an exception, print stack trace to console
     File file = new File(path);
     if (file.isDirectory()) {
       path = path + "/" + list.getTitle() + ".json";
@@ -32,8 +35,11 @@ public class TodoListIO {
   }
 
   public static ItemList loadList(String path) {
-    // Convert Json file given back into an ItemList
-    // Return ItemList
+    // Create a new ItemList, using the filename of the file given by the path as the title
+    // Read a JSon file into an ArrayList of items
+    // Use those items to create the items in ItemList as an observableArrayList
+    // Print stack trace if the file can't be found
+    // Return the list
     ItemList list = new ItemList((new File(path).getName()).replaceFirst("[.][^.]+$", ""));
     try {
       Gson gson = new Gson();
